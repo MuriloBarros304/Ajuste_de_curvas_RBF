@@ -45,6 +45,8 @@ def ano(m, h, n=5):
             y[i] = 0
     plt.plot(x, y)
     plt.scatter(h, m)
+    plt.xlabel('meses')
+    plt.ylabel('radiação direta normal média (Wh/m²)')
     plt.grid()
     plt.title("Anual")
     plt.savefig('anual.png')
