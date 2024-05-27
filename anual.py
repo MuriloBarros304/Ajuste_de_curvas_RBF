@@ -1,19 +1,7 @@
-
-"""Ajuste anual"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 import statistics as st
-
-# Dados (sendo cada termo a média aritmética de potências de cada mês)
-a = [318, 313.53333333, 326.93333333, 318, 297.06666667, 265.8, 272.4, 337.73333333, 375.93333333, 413.13333333, 419.13333333, 356.53333333]
-
-# Criando as matrizes
-h = np.linspace(1, 12, 12)
-n = 6
-phi = np.zeros((12, n))
-f = np.zeros((12, 1))
-w = np.zeros((n, 1))
+import pandas as pd
 
 # Função gaussiana
 def rbf(x, c, s):
@@ -21,45 +9,68 @@ def rbf(x, c, s):
 
 # Cálculo dos centros
 def centro(n):
-    return np.linspace(1,12,n)
+    return np.linspace(6, 21, n)
 
 # Cálculo do desvio padrão
 def desvio(x):
     return st.pstdev(x)
 
-# Preenchendo o vetor de funções (phi)
-for i in range(12):
-    for j in range(n):
-        phi[i][j] = rbf(h[i], centro(n)[j], desvio(h))
-
 # Ajuste de curvas RBF
-def ac(w, phi, v, t):
+def ac(w, v, t, n):
     s = 0
     for j in range(n):
         s += rbf(v[t], centro(n)[j], desvio(v)) * w[j]
     return s
-def mes(m):
-  #for i in range(12):
-    #f[i] = m[i]
 
-# Matriz de coeficientes (w)
-  m1 = np.linalg.inv((phi).T @ phi)
-  m2 = (phi).T @ m
-  w = (m1 @ m2)
+def ano(m, h, n=5):
+    # Preenchendo o vetor de funções (phi)
+    phi = np.zeros((12, n))
+    for i in range(12):
+        for j in range(n):
+            phi[i][j] = rbf(h[i], centro(n)[j], desvio(h))
 
-# Eixos
-  x = np.linspace(1, 12, 100)
-  y = np.linspace(1, 12, 100)
+    # Matriz de coeficientes (w)
+    m1 = np.linalg.inv((phi).T @ phi)
+    m2 = phi.T @ m
+    w = m1 @ m2
 
-# Plot
-  for i in range(len(x)):
-    y[i] = ac(w, phi, x, i)
-    if(y[i]<0):
-      y[i]=0
-  print('w = ', w)
-  plt.plot(x, y)
-  plt.scatter(h, m)
-  plt.grid()
-  plt.show()
-plt.title("Anual")
-mes(a)
+    # Eixos
+    x = np.linspace(1, 12, 100)
+    y = np.zeros_like(x)
+
+    # Plot
+    for i in range(len(x)):
+        y[i] = ac(w, x, i, n)
+        if y[i] < 0:
+            y[i] = 0
+    plt.plot(x, y)
+    plt.scatter(h, m)
+    plt.grid()
+    plt.title("Anual")
+    plt.savefig('anual.png')
+    plt.show()
+    plt.clf()
+
+# Carregando dados
+df = pd.read_excel('dados-cn.xlsx')
+
+# Calculando a média dos valores mensais
+m = np.zeros(12)
+m[0] = df['Jan'].mean()
+m[1] = df['Feb'].mean()
+m[2] = df['Mar'].mean()
+m[3] = df['Apr'].mean()
+m[4] = df['May'].mean()
+m[5] = df['Jun'].mean()
+m[6] = df['Jul'].mean()
+m[7] = df['Aug'].mean()
+m[8] = df['Sep'].mean()
+m[9] = df['Oct'].mean()
+m[10] = df['Nov'].mean()
+m[11] = df['Dec'].mean()
+
+# Array de meses
+h = np.linspace(1, 12, 12)
+
+# Executando o ajuste anual
+ano(m, h)
