@@ -25,7 +25,7 @@ def ac(w, v, t, n):
 # Função para calcular e plotar o ajuste de curvas de cada mês
 def mes(m, h, n=5):
     # Preenchendo o vetor de funções (phi)
-    phi = np.zeros((len(h), n))  # Use len(h) em vez de 24 para maior flexibilidade
+    phi = np.zeros((len(h), n)) 
     for i in range(len(h)):
         for j in range(n):
             phi[i][j] = rbf(h[i], centro(n)[j], desvio(h))
