@@ -18,8 +18,11 @@ Ajuste mensal
 import numpy as np
 import matplotlib.pyplot as plt
 import statistics as st
+import pandas as pd
 
 # Dados
+df = pd.read_excel('dados-cn.xlsx')
+
 jan = [0, 0, 50, 276, 419, 523, 572, 576, 553, 488, 408, 335, 271, 217, 82]
 fev = [0, 0, 13, 232, 412, 531, 596, 589, 541, 477, 411, 339, 275, 210, 77]
 mar = [0, 0, 11, 222, 408, 535, 589, 596, 565, 523, 450, 375, 319, 238, 73]
