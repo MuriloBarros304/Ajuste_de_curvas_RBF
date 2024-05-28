@@ -9,7 +9,7 @@ def rbf(x, c, s):
 
 # Cálculo dos centros
 def centro(n):
-    return np.linspace(6, 21, n)
+    return np.linspace(1, 12, n)
 
 # Cálculo do desvio padrão
 def desvio(x):
