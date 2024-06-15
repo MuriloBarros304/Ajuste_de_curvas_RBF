@@ -4,26 +4,26 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 def rbf(x, c, s):
-    '''Função gaussiana'''
+    """Função gaussiana"""
     return np.exp(-1 / (2 * s**2) * (x - c)**2)
 
 def centro(n):
-    '''Retorna o centro das gaussianas, será determinado de acordo com o eixo x'''
+    """Retorna o centro das gaussianas, será determinado de acordo com o eixo x"""
     return np.linspace(1, 12, n)
 
 def desvio(x):
-    '''Retorna o desvio padrão'''
+    """Retorna o desvio padrão"""
     return st.pstdev(x)
 
 def ac(w, v, t, n):
-    '''Faz o ajuste de funções de base radial, cada gaussiana tem como centro o endereço no eixo x'''
+    """Faz o ajuste de funções de base radial, cada gaussiana tem como centro o endereço no eixo x"""
     s = 0
     for j in range(n):
         s += rbf(v[t], centro(n)[j], desvio(v)) * w[j]
     return s
 
 def ano(m, h, n=5):
-    '''Faz o ajuste para todos os meses do ano'''
+    """Faz o ajuste para todos os meses do ano"""
 
     # Vetor de funções (phi)
     phi = np.zeros((12, n))
