@@ -1,29 +1,30 @@
+import statistics as st
 import numpy as np
 import matplotlib.pyplot as plt
-import statistics as st
 import pandas as pd
 
-# Função gaussiana
 def rbf(x, c, s):
+    '''Função gaussiana'''
     return np.exp(-1 / (2 * s**2) * (x - c)**2)
 
-# Cálculo dos centros
 def centro(n):
+    '''Retorna o centro das gaussianas, será determinado de acordo com o eixo x'''
     return np.linspace(6, 21, n)
 
-# Cálculo do desvio padrão
 def desvio(x):
+    '''Retorna o desvio padrão'''
     return st.pstdev(x)
 
-# Ajuste de curvas RBF
 def ac(w, v, t, n):
+    '''Faz o ajuste de funções de base radial, cada gaussiana tem como centro o endereço no eixo x'''
     s = 0
     for j in range(n):
         s += rbf(v[t], centro(n)[j], desvio(v)) * w[j]
     return s
 
-# Função para calcular e plotar o ajuste de curvas de cada mês
 def mes(m, h, n=5):
+    '''Faz o ajuste para todos os meses do ano'''
+
     # Preenchendo o vetor de funções (phi)
     phi = np.zeros((len(h), n)) 
     for i in range(len(h)):
